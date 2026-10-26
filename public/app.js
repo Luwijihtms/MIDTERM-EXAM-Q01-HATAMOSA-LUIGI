@@ -80,7 +80,7 @@ async function searchReservation(event) {
         if (!response.ok) {
             throw new Error(await getErrorMessage(response, 'Reservation not found.'));
         }
-
+        
         const reservation = await response.json();
         renderReservations([reservation]);
     } catch (error) {
