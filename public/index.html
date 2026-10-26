@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Reservation System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Room Reservation System</h1>
+
+        <section>
+            <h2>Add Reservation</h2>
+            <form id="reservation-form">
+                <input type="text" name="room" placeholder="Room" required>
+                <input type="text" name="reserved_by" placeholder="Reserved By" required>
+                <input type="date" name="date" required>
+                <input type="time" name="start_time" required>
+                <input type="time" name="end_time" required>
+                <button type="submit">Add Reservation</button>
+            </form>
+        </section>
+
+    <section>
+        <h2>Current Reservations</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Room Number</th>
+                        <th>Reserved By</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reservations-list"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
