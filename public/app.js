@@ -4,10 +4,10 @@ const searchForm = document.getElementById('reservation-search-form');
 const reservationsList = document.getElementById('reservations-list');
 const showAllButton = document.getElementById('show-reservations');
 
-function renderReservations(reservations) {
+function renderReservations(reservations){
     reservationsList.replaceChildren();
 
-    for (const reservation of reservations) {
+    for(const reservation of reservations){
         const row = document.createElement('tr');
 
         const details = [
@@ -19,7 +19,7 @@ function renderReservations(reservations) {
             reservation.end_time
         ];
 
-        for (const detail of details) {
+        for(const detail of details){
             const cell = document.createElement('td');
             cell.textContent = detail ?? '';
             row.appendChild(cell);
@@ -39,91 +39,91 @@ function renderReservations(reservations) {
     }
 }
 
-async function getErrorMessage(response, fallback) {
+async function getErrorMessage(response, fallback){
     const result = await response.json().catch(() => ({}));
     return result.message || result.error || fallback;
 }
 
-async function loadReservations() {
-    try {
+async function loadReservations(){
+    try{
         const response = await fetch(reservationsUrl);
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(await getErrorMessage(response, 'Could not load reservations.'));
         }
 
         const reservations = await response.json();
 
-        if (!Array.isArray(reservations)) {
+        if(!Array.isArray(reservations)){
             throw new Error('The reservation data is not a list.');
         }
 
         renderReservations(reservations);
-    } catch (error) {
+    }catch (error){
         alert(error.message);
     }
 }
 
-async function searchReservation(event) {
+async function searchReservation(event){
     event.preventDefault();
 
     const id = new FormData(searchForm).get('id')?.toString().trim();
 
-    if (!id) {
+    if(!id){
         alert('Enter a reservation ID.');
         return;
     }
 
-    try {
+    try{
         const response = await fetch(`${reservationsUrl}/${encodeURIComponent(id)}`);
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(await getErrorMessage(response, 'Reservation not found.'));
         }
-        
+
         const reservation = await response.json();
         renderReservations([reservation]);
-    } catch (error) {
+    }catch (error){
         alert(error.message);
     }
 }
 
-async function addReservation(event) {
+async function addReservation(event){
     event.preventDefault();
 
     const reservation = Object.fromEntries(new FormData(reservationForm));
 
-    try {
+    try{
         const response = await fetch(reservationsUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reservation)
         });
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(await getErrorMessage(response, 'Could not add reservation.'));
         }
 
         reservationForm.reset();
         await loadReservations();
-    } catch (error) {
+    }catch (error){
         alert(error.message);
     }
 }
 
-async function deleteReservation(id) {
-    try {
+async function deleteReservation(id){
+    try{
         const response = await fetch(
             `${reservationsUrl}/${encodeURIComponent(id)}`,
             { method: 'DELETE' }
         );
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(await getErrorMessage(response, 'Could not delete reservation.'));
         }
 
         await loadReservations();
-    } catch (error) {
+    }catch (error){
         alert(error.message);
     }
 }

@@ -5,11 +5,11 @@ const path = require('path');
 const router = express.Router();
 const dataFilePath = path.join(__dirname, '../../data.json');
 
-function readReservations() {
+function readReservations(){
     return JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
 }
 
-function saveReservations(reservations) {
+function saveReservations(reservations){
     fs.writeFileSync(dataFilePath, JSON.stringify(reservations, null, 2));
 }
 
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
     const fields = ['room', 'reserved_by', 'date', 'start_time', 'end_time'];
     const reservationData = {};
 
-    for (const field of fields) {
+    for (const field of fields){
         const value = req.body[field];
 
         if (typeof value !== 'string' || !value.trim()) {
@@ -48,7 +48,7 @@ router.post('/', (req, res) => {
         reservation.date === reservationData.date
     );
 
-    if (roomIsTaken) {
+    if (roomIsTaken){
         return res.status(409).json({
             message: 'This room already has a reservation on that date.'
         });
@@ -69,14 +69,14 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
     const id = Number(req.params.id);
 
-    if (!Number.isInteger(id)) {
+    if (!Number.isInteger(id)){
         return res.status(400).json({ message: 'ID must be a number.' });
     }
 
     const reservations = readReservations();
     const index = reservations.findIndex(reservation => reservation.id === id);
 
-    if (index === -1) {
+    if (index === -1){
         return res.status(404).json({ message: 'Reservation not found.' });
     }
 
